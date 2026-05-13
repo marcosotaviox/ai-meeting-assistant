@@ -1,0 +1,15 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+teste.mp3
+aula17.mp3
+aula17_short.mp3
+test_*.py
+test_*.bat
