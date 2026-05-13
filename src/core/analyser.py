@@ -1,7 +1,7 @@
 """
 core/analyser.py
 =================
-Extracts structured insights from any meeting or learning content.
+Extracts structured insights from transcripts or documents.
 Auto-detects content type and adapts extraction accordingly.
 Uses Claude claude-sonnet-4-5 via LangChain + PydanticOutputParser.
 """
@@ -35,24 +35,24 @@ class Example(BaseModel):
 
 class MeetingInsights(BaseModel):
     title: str = Field(description="Short descriptive title inferred from content")
-    content_type: str = Field(description="One of: Meeting, Class, Webinar, Presentation")
-    summary: str = Field(description="Comprehensive summary in 8-10 sentences covering all major points discussed")
-    sentiment: str = Field(description="Overall tone: Productive / Neutral / Tense / Engaging / Informative")
+    content_type: str = Field(description="One of: Meeting, Class, Webinar, Presentation, Document, Report, Article")
+    summary: str = Field(description="Comprehensive summary in 8-10 sentences covering all major points")
+    sentiment: str = Field(description="Overall tone: Productive / Neutral / Tense / Engaging / Informative / Technical")
 
     # Meeting fields
     action_items: list[ActionItem] = Field(default=[], description="Action items (for Meeting type only)")
     key_decisions: list[str] = Field(default=[], description="Decisions made (for Meeting type only)")
     open_questions: list[str] = Field(default=[], description="Unresolved questions (for Meeting type only)")
 
-    # Learning fields
-    key_points: list[str] = Field(default=[], description="Main takeaways learned (for Class/Webinar/Presentation, minimum 5, each 2-3 sentences long)")
-    key_concepts: list[KeyConcept] = Field(default=[], description="Core concepts explained (for Class/Webinar/Presentation, minimum 4)")
-    examples: list[Example] = Field(default=[], description="Real examples mentioned (for Class/Webinar/Presentation, minimum 3)")
+    # Learning / Document fields
+    key_points: list[str] = Field(default=[], description="Main takeaways (minimum 5, each 2-3 sentences long)")
+    key_concepts: list[KeyConcept] = Field(default=[], description="Core concepts explained (minimum 4)")
+    examples: list[Example] = Field(default=[], description="Real examples mentioned (minimum 3)")
 
 
-# ── Prompt ────────────────────────────────────────────────────────────────────
+# ── Prompts ───────────────────────────────────────────────────────────────────
 
-_SYSTEM = """You are an expert content analyst.
+_SYSTEM_TRANSCRIPT = """You are an expert meeting and learning content analyst.
 Always respond in the same language as the transcript.
 First, classify the content type: Meeting, Class, Webinar, or Presentation.
 
@@ -67,29 +67,58 @@ For CLASS/WEBINAR/PRESENTATION content:
 Always be specific and detailed. Never be vague. Use the actual content from the transcript.
 {format_instructions}"""
 
-_HUMAN = """TRANSCRIPT:
-{transcript}"""
+_SYSTEM_DOCUMENT = """You are an expert document analyst and knowledge extractor.
+Always respond in the same language as the document.
+First, classify the content type: Document, Report, or Article.
+
+For all document types:
+- Write a comprehensive 8-10 sentence summary covering ALL major topics
+- Extract minimum 5 key points, each explained in 2-3 sentences
+- Extract minimum 4 key concepts with detailed explanations
+- Extract minimum 3 concrete examples or case studies mentioned
+- Identify the main argument or purpose of the document
+
+Always be specific and detailed. Reference actual content from the document.
+{format_instructions}"""
+
+_HUMAN = """{input_type}:
+{content}"""
 
 
-# ── Main function ─────────────────────────────────────────────────────────────
+# ── Main functions ────────────────────────────────────────────────────────────
 
 def analyse_transcript(transcript: str) -> MeetingInsights:
     """
-    Analyse transcript and return structured insights adapted to content type.
+    Analyse a meeting or class transcript.
 
     Args:
         transcript: Full transcript text from Whisper.
 
     Returns:
         MeetingInsights Pydantic model instance.
-
-    Raises:
-        RuntimeError: LLM call or parsing failure.
     """
+    return _analyse(transcript, input_type="TRANSCRIPT", system=_SYSTEM_TRANSCRIPT)
+
+
+def analyse_document(text: str) -> MeetingInsights:
+    """
+    Analyse a document (PDF, DOCX, TXT, PPTX).
+
+    Args:
+        text: Extracted text from document_reader.py.
+
+    Returns:
+        MeetingInsights Pydantic model instance.
+    """
+    return _analyse(text, input_type="DOCUMENT", system=_SYSTEM_DOCUMENT)
+
+
+def _analyse(content: str, input_type: str, system: str) -> MeetingInsights:
+    """Internal analysis function."""
     parser = PydanticOutputParser(pydantic_object=MeetingInsights)
 
     prompt = ChatPromptTemplate.from_messages([
-        ("system", _SYSTEM),
+        ("system", system),
         ("human", _HUMAN),
     ]).partial(format_instructions=parser.get_format_instructions())
 
@@ -102,6 +131,9 @@ def analyse_transcript(transcript: str) -> MeetingInsights:
     chain = prompt | llm | parser
 
     try:
-        return chain.invoke({"transcript": transcript})
+        return chain.invoke({
+            "input_type": input_type,
+            "content": content,
+        })
     except Exception as exc:
         raise RuntimeError(f"Analysis failed: {exc}") from exc

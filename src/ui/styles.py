@@ -19,18 +19,33 @@ def inject_custom_css() -> None:
         background-color: #0a0f1e !important;
     }
 
+    /* ── Hero background ──────────────────────────────────────────────────── */
     .main {
-        background: radial-gradient(ellipse at 60% 20%, #0d1f3c 0%, #0a0f1e 60%, #000000 100%) !important;
+        background-image: url('https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1600&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    .main::before {
+        content: '';
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: radial-gradient(ellipse at 60% 20%, #0d1f3c88 0%, #0a0f1ecc 60%, #000000ee 100%);
+        z-index: 0;
+        pointer-events: none;
     }
 
     .main .block-container {
+        position: relative;
+        z-index: 1;
         padding-top: 2rem;
         max-width: 1100px;
     }
 
     /* ── Sidebar ──────────────────────────────────────────────────────────── */
     section[data-testid="stSidebar"] {
-        background: rgba(10, 15, 30, 0.85) !important;
+        background: rgba(10, 15, 30, 0.92) !important;
         backdrop-filter: blur(12px) !important;
         border-right: 1px solid rgba(0, 229, 255, 0.15) !important;
     }
@@ -221,5 +236,18 @@ def inject_custom_css() -> None:
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.2); border-radius: 2px; }
+
+    /* ── Expanders ────────────────────────────────────────────────────────── */
+    [data-testid="stExpander"] {
+        background: rgba(0, 229, 255, 0.03) !important;
+        border: 1px solid rgba(0, 229, 255, 0.12) !important;
+        border-radius: 8px !important;
+        margin-bottom: 0.4rem !important;
+    }
+
+    [data-testid="stExpander"] summary {
+        color: #CBD5E1 !important;
+        font-size: 0.82rem !important;
+    }
     </style>
     """, unsafe_allow_html=True)
