@@ -77,19 +77,19 @@ def render_sidebar() -> tuple[str | None, bytes | None, str | None]:
         with st.expander("🎙  Audio Transcription"):
             st.markdown("""
 **What it does**
-Converts audio recordings into text using OpenAI Whisper running locally on your GPU.
+Converts audio recordings into text using OpenAI Whisper api.
 
 **Supported formats**
 MP3 · MP4 · WAV · M4A · WEBM · OGG
 
 **Model**
-`whisper-base` — auto-detects language, supports 99 languages
+`whisper-1` via OpenAI API — auto-detects language, supports 99 languages
 
 **Performance**
-Runs on your RTX 3070 — approx. 5× faster than CPU
+Cloud-based — no local GPU required
 
 **Cost**
-Free — runs entirely on your machine, no API calls
+~$0.006 per minute of audio
             """)
 
         with st.expander("📄  Document Analysis"):
