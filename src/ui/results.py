@@ -66,21 +66,41 @@ def render_results(insights: MeetingInsights, transcript: str) -> None:
     st.divider()
     st.markdown("<div class='section-header'>Export</div>", unsafe_allow_html=True)
 
-    if st.button("🎞  Generate Slides", type="primary", use_container_width=True):
-        with st.spinner("Generating slides..."):
-            try:
-                from src.utils.slides_generator import generate_slides
-                pptx_bytes = generate_slides(insights)
-                safe_title = insights.title.replace(" ", "_")[:40]
-                st.download_button(
-                    label="⬇  Download Presentation (.pptx)",
-                    data=pptx_bytes,
-                    file_name=f"meetingmind_{safe_title}.pptx",
-                    mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
-                    use_container_width=True,
-                )
-            except Exception as exc:
-                st.error(f"Slides generation failed: {exc}")
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button("📊  Generate Slides", type="primary", use_container_width=True):
+            with st.spinner("Generating slides..."):
+                try:
+                    from src.utils.slides_generator import generate_slides
+                    pptx_bytes = generate_slides(insights, include_youtube=False)
+                    safe_title = insights.title.replace(" ", "_")[:40]
+                    st.download_button(
+                        label="⬇  Download (.pptx)",
+                        data=pptx_bytes,
+                        file_name=f"meetingmind_{safe_title}.pptx",
+                        mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                        use_container_width=True,
+                    )
+                except Exception as exc:
+                    st.error(f"Failed: {exc}")
+
+    with col2:
+        if st.button("▶  Generate Slides + YouTube", use_container_width=True):
+            with st.spinner("Fetching YouTube videos and generating slides..."):
+                try:
+                    from src.utils.slides_generator import generate_slides
+                    pptx_bytes = generate_slides(insights, include_youtube=True)
+                    safe_title = insights.title.replace(" ", "_")[:40]
+                    st.download_button(
+                        label="⬇  Download + YouTube (.pptx)",
+                        data=pptx_bytes,
+                        file_name=f"meetingmind_{safe_title}_youtube.pptx",
+                        mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                        use_container_width=True,
+                    )
+                except Exception as exc:
+                    st.error(f"Failed: {exc}")
 
     st.divider()
 
