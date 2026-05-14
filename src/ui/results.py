@@ -69,17 +69,17 @@ def render_results(insights: MeetingInsights, transcript: str) -> None:
     col1, col2 = st.columns(2)
 
     with col1:
-        if st.button("📊  Generate Slides", type="primary", use_container_width=True):
+        if st.button("🎨  Generate Slides", type="primary", use_container_width=True):
             with st.spinner("Generating slides..."):
                 try:
-                    from src.utils.slides_generator import generate_slides
-                    pptx_bytes = generate_slides(insights, include_youtube=False)
+                    from src.utils.html_generator import generate_html_slides
+                    html = generate_html_slides(insights, include_youtube=False)
                     safe_title = insights.title.replace(" ", "_")[:40]
                     st.download_button(
-                        label="⬇  Download (.pptx)",
-                        data=pptx_bytes,
-                        file_name=f"meetingmind_{safe_title}.pptx",
-                        mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                        label="⬇  Download Slides (.html)",
+                        data=html.encode("utf-8"),
+                        file_name=f"meetingmind_{safe_title}.html",
+                        mime="text/html",
                         use_container_width=True,
                     )
                 except Exception as exc:
@@ -89,20 +89,18 @@ def render_results(insights: MeetingInsights, transcript: str) -> None:
         if st.button("▶  Generate Slides + YouTube", use_container_width=True):
             with st.spinner("Fetching YouTube videos and generating slides..."):
                 try:
-                    from src.utils.slides_generator import generate_slides
-                    pptx_bytes = generate_slides(insights, include_youtube=True)
+                    from src.utils.html_generator import generate_html_slides
+                    html = generate_html_slides(insights, include_youtube=True)
                     safe_title = insights.title.replace(" ", "_")[:40]
                     st.download_button(
-                        label="⬇  Download + YouTube (.pptx)",
-                        data=pptx_bytes,
-                        file_name=f"meetingmind_{safe_title}_youtube.pptx",
-                        mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                        label="⬇  Download + YouTube (.html)",
+                        data=html.encode("utf-8"),
+                        file_name=f"meetingmind_{safe_title}_youtube.html",
+                        mime="text/html",
                         use_container_width=True,
                     )
                 except Exception as exc:
                     st.error(f"Failed: {exc}")
-
-    st.divider()
 
     # ── Transcript ────────────────────────────────────────────────────────────
     with st.expander("Full Transcript", expanded=False):
