@@ -16,30 +16,30 @@ It auto-detects content type (Meeting, Class, Webinar, Presentation, Document) a
 
 ## Screenshots
 
-### 1 — Analysis Dashboard
-Structured insights with metrics, executive summary, and detailed key points extracted from a 22MB audio recording.
+### 1 — Upload & Analyse
+Clean upload interface with automatic file type detection — audio routes to Whisper, documents route directly to Claude.
 
-![Analysis Dashboard](screenshots/eg1.png)
+![Upload](screenshots/loaded.png)
 
-### 2 — Key Points Learned
-Each key point rendered as a glassmorphic card with detailed explanation — numbered, organised, actionable.
-
-![Key Points](screenshots/eg2.png)
-
-### 3 — Key Concepts & Examples
-Side-by-side layout of core concepts and real-world examples extracted from the content.
-
-![Concepts and Examples](screenshots/eg3.png)
-
-### 4 — Processing Pipeline
+### 2 — Processing Pipeline
 Real-time status updates as the app transcribes with Whisper API and analyses with Claude.
 
 ![Processing](screenshots/processing.png)
 
-### 5 — Upload & Analyse
-Clean upload interface with automatic file type detection — audio routes to Whisper, documents route directly to Claude.
+### 3 — Analysis Dashboard
+Structured insights with metrics, executive summary, and detailed key points extracted from a 22MB audio recording.
 
-![Upload](screenshots/loaded.png)
+![Analysis Dashboard](screenshots/eg1.png)
+
+### 4 — Key Points Learned
+Each key point rendered as a glassmorphic card with detailed explanation — numbered, organised, actionable.
+
+![Key Points](screenshots/eg2.png)
+
+### 5 — Key Concepts & Examples
+Side-by-side layout of core concepts and real-world examples extracted from the content.
+
+![Concepts and Examples](screenshots/eg3.png)
 
 ### 6 — Generating Slides
 One-click HTML slide generation with optional YouTube video integration.
