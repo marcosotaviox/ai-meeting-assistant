@@ -46,15 +46,13 @@ One-click HTML slide generation with optional YouTube video integration.
 
 ![Generating Slides](screenshots/generatingslides.png)
 
-### 7 — Slides Ready
+### 7 — HTML Slide Deck
 Download button appears immediately after generation — no page reload required.
 
-![Slides Ready](screenshots/slidesgenerated.png)
-
-### 8 — HTML Slide Deck
-McKinsey/BCG-style slide deck rendered in HTML — black background, neon lime accents, Urbanist typography.
-
 ![HTML Slides](screenshots/slidesreadyhtml.png)
+### 8 — Slides Ready
+
+![Slides Ready](screenshots/slidesgenerated.png)
 
 ### 9 — YouTube Version
 Dedicated "Dive Deeper" slide with real YouTube thumbnails and clickable links fetched via YouTube Data API v3.
@@ -174,4 +172,4 @@ pytest tests/ -v
 
 ---
 
-*Built for the Australian market — suitable for corporate meetings, education, research, and enterprise use cases.*
+*Built by Marcos*
