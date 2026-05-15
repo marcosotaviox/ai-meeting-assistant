@@ -16,45 +16,43 @@ It auto-detects content type (Meeting, Class, Webinar, Presentation, Document) a
 
 ## Screenshots
 
-### 1 — Analysis Dashboard
-Structured insights with metrics, executive summary, and detailed key points extracted from a 22MB audio recording.
+### 1 — Upload & Analyse
+Clean upload interface with automatic file type detection — audio routes to Whisper, documents route directly to Claude.
 
-![Analysis Dashboard](screenshots/eg1.png)
+![Upload](screenshots/loaded.png)
 
-### 2 — Key Points Learned
-Each key point rendered as a glassmorphic card with detailed explanation — numbered, organised, actionable.
-
-![Key Points](screenshots/eg2.png)
-
-### 3 — Key Concepts & Examples
-Side-by-side layout of core concepts and real-world examples extracted from the content.
-
-![Concepts and Examples](screenshots/eg3.png)
-
-### 4 — Processing Pipeline
+### 2 — Processing Pipeline
 Real-time status updates as the app transcribes with Whisper API and analyses with Claude.
 
 ![Processing](screenshots/processing.png)
 
-### 5 — Upload & Analyse
-Clean upload interface with automatic file type detection — audio routes to Whisper, documents route directly to Claude.
+### 3 — Analysis Dashboard
+Structured insights with metrics, executive summary, and detailed key points extracted from a 22MB audio recording.
 
-![Upload](screenshots/loaded.png)
+![Analysis Dashboard](screenshots/eg1.png)
+
+### 4 — Key Points Learned
+Each key point rendered as a glassmorphic card with detailed explanation — numbered, organised, actionable.
+
+![Key Points](screenshots/eg2.png)
+
+### 5 — Key Concepts & Examples
+Side-by-side layout of core concepts and real-world examples extracted from the content.
+
+![Concepts and Examples](screenshots/eg3.png)
 
 ### 6 — Generating Slides
 One-click HTML slide generation with optional YouTube video integration.
 
 ![Generating Slides](screenshots/generatingslides.png)
 
-### 7 — Slides Ready
+### 7 — HTML Slide Deck
 Download button appears immediately after generation — no page reload required.
 
-![Slides Ready](screenshots/slidesgenerated.png)
-
-### 8 — HTML Slide Deck
-McKinsey/BCG-style slide deck rendered in HTML — black background, neon lime accents, Urbanist typography.
-
 ![HTML Slides](screenshots/slidesreadyhtml.png)
+### 8 — Slides Ready
+
+![Slides Ready](screenshots/slidesgenerated.png)
 
 ### 9 — YouTube Version
 Dedicated "Dive Deeper" slide with real YouTube thumbnails and clickable links fetched via YouTube Data API v3.
@@ -144,8 +142,8 @@ streamlit run app.py
 ### Required API Keys
 
 ```env
-ANTHROPIC_API_KEY=sk-ant-...
-OPENAI_API_KEY=sk-proj-...
+ANTHROPIC_API_KEY=...
+OPENAI_API_KEY=...
 UNSPLASH_ACCESS_KEY=...
 YOUTUBE_API_KEY=...
 ```
@@ -174,4 +172,4 @@ pytest tests/ -v
 
 ---
 
-*Built for the Australian market — suitable for corporate meetings, education, research, and enterprise use cases.*
+*Built by Marcos*
